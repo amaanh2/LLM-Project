@@ -1,0 +1,39 @@
+<title>Balance Topup</title>
+<link rel="stylesheet" href="/static/style.css">
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        {% if username %}
+        <a href="/assistant">Assistant</a>
+        <a href="/topup">Topup</a>
+        <a href="/logout">Logout</a>
+        {% else %}
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        {% endif %}
+    </div>
+    <h1>Topup Message Balance</h1>
+    The current rate is: $0.36 per message.<br>
+    {% if username %}
+        <p>You have current balance {{balance}}.</p>
+        {% if success %}
+        <p style="color:green">{{success}}</p>
+        {% endif %}
+        <form action="/topup" method="post">
+            <label for="purchasecount">Amount</label><br>
+            <input type="text" id="purchasecount" name="purchasecount"><br>
+            <label for="cardnumber">Card Number</label><br>
+            <input type="text" id="cardnumber" name="cardnumber"><br>
+            <label for="cvv">CVV</label><br>
+            <input type="text" id="cvv" name="cvv"><br>
+            <label for="expiry">Expiry Date</label><br>
+            <input type="text" id="expiry" name="expiry"><br>
+            {% if error %}
+            <p style="color: red">{{error}}</p>
+            {% endif %}
+            <input type="submit" id="topupsubmit" value="Topup">
+        </form>
+    {% else %}
+        <p style="color:red">Must be logged in to access!</p>
+    {% endif %}
+</body>

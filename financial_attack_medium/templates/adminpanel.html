@@ -1,0 +1,30 @@
+<title>Admininstration</title>
+<script src="static/adminstuff.js"></script>
+<link rel="stylesheet" href="/static/style.css">
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        {% if username %}
+        <a href="/assistant">Assistant</a>
+        <a href="/topup">Topup</a>
+        <a href="/logout">Logout</a>
+        {% else %}
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        {% endif %}
+    </div>
+    <h1>Admin Panel</h1>
+    {% if error %}
+        <div style="color:red">{{error}}</div>
+    {% else %}
+        <h3>Statistics</h3>
+        {{username}}
+        <p id="balance">Balance: {{ balance }}</p>
+        <p id="messagestodate">Messages to date: {{ mtd }}</p>
+        <p id="userlist">Users:</p>
+        {% for user in userlist %}
+            <li>{{ user }}</li>
+        {% endfor %}
+        <button id="refreshbutton">Refresh</button>
+    {% endif %}
+</body>

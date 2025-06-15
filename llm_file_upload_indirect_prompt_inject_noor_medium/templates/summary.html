@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LLM Summary Output</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        pre {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .back-link a {
+            text-decoration: none;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LLM Summary Output</h1>
+        <p><strong>File:</strong> {{ filename }}</p>
+
+        <h2>LLM Input Prompt</h2>
+        <pre>{{ prompt }}</pre>
+
+        <h2>LLM Response</h2>
+        <pre>{{ summary }}</pre>
+
+        <div class="back-link">
+            <a href="/">Upload another file</a>
+        </div>
+    </div>
+</body>
+</html>

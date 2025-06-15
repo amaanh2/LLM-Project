@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index of /root/admin/</title>
+</head>
+<body>
+    <h1>Index of /root/admin/</h1>
+    <ul>
+        {% for file in files %}
+            <li>
+                <a href="/root/admin/{{ file }}">{{ file }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

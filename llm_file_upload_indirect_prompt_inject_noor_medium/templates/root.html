@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index of /root/</title>
+</head>
+<body>
+    <h1>Index of /root/</h1>
+    <ul>
+        {% for file in files %}
+            <li>
+                <a href="/root/{{ file }}">
+                    {{ file }}{% if not '.' in file %}/{% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<title>Assistant</title>
+<script src="static/application.js"></script>
+<link rel="stylesheet" href="/static/style.css">
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        {% if username %}
+        <a href="/assistant">Assistant</a>
+        <a href="/topup">Topup</a>
+        <a href="/logout">Logout</a>
+        {% else %}
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        {% endif %}
+    </div>
+    <h1>AI Assistant</h1>
+    <h3>Useful for most tasks!</h3>
+    {% if error %}
+    <p style="color:red">{{error}}</p>
+    {% else %}
+    <a href="/clear_chat">Clear Chat</a><br>
+    You are speaking with our proprietary (it's SmolLM2 not proprietary) assistant!.<br>
+    <textarea id="chathistory" style="height:600px;width:100vw;overflow-y:auto;resize:none" readonly >
+        {% if messages %}
+        {{messages}}
+        --- Messages Reloaded ---
+        {% endif %}
+    </textarea><br>
+    <input type="text" style="width:100vw" id="chatbox" name="chatbox" placeholder="Send a message to the assistant..." autocomplete="off"><br>
+    <button id="send">Send</button>
+    <div id="waiting" style="color:red">Awaiting response...</div>
+    {% endif %}
+</body>

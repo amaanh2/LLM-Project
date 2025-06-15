@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Misinformation Vulnerability</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>LLM Misinformation Vulnerability</h1>
+        
+        <form action="/generate" method="POST">
+            <label for="prompt">Enter a prompt:</label><br>
+            <textarea id="prompt" name="prompt" rows="4" cols="50">{{ prompt }}</textarea><br><br>
+            <input type="submit" value="Go">
+        </form>
+
+        {% if history %}
+        <div class="result">
+            <h2>Conversation History:</h2>
+            {% for user, ai in history %}
+                <div class="conversation-entry">
+                    <p><strong>You:</strong> {{ user }}</p>
+                    <p><strong>LLM:</strong> {{ ai }}</p>
+                    <hr>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Direct Prompt Injection Chatbot</title>
+    <style>
+        /* some quick styling for the layout and elements */
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        #chatbox { border: 1px solid #ccc; height: 400px; overflow-y: scroll; padding: 10px; margin-bottom: 10px; }
+        #userInput, #username, #password { width: 70%; padding: 8px; margin-bottom: 10px; }
+        button { padding: 8px 15px; margin-right: 10px; }
+        .user { color: blue; margin-bottom: 5px; }
+        .bot { color: green; margin-bottom: 5px; }
+        .error { color: red; }
+        /*
+        little animated typing dots for when the bot is "thinking"
+        just for a nicer feel
+        */
+        .typing-indicator {
+            display: inline-block;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 15px;
+        }
+        .typing-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #888;
+            margin: 0 2px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        /*
+        fake strawberry picture
+        */
+        #strawberry {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            z-index: 1000;
+            opacity: 0.8;
+        }
+
+        #strawberry img {
+            width: 50px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        #strawberry img:hover {
+            transform: scale(1.2) rotate(10deg);
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Direct Prompt Injection Chatbot</h1>
+    <!-- login & register inputs -->
+    <div>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="register()">Register</button>
+        <button onclick="login()">Login</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+     <!-- chat area -->
+    <div id="chatbox"></div>
+    <input type="text" id="userInput" placeholder="Type your message..." disabled>
+    <button onclick="sendMessage()" disabled id="sendBtn">Send</button>
+
+    <script>
+        let username = "";
+        let password = "";
+        // adds those little typing dots to show bot is working
+        function showTypingIndicator() {
+            const chatbox = document.getElementById('chatbox');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.className = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <strong>Bot:</strong> 
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                `;
+            chatbox.appendChild(typingDiv);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+        // removes typing dots when done
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) typingIndicator.remove();
+        }
+        // handles user registration
+        async function register() {
+            username = document.getElementById('username').value.trim();
+            password = document.getElementById('password').value.trim();
+            if (!username || !password) return alert("Please enter both username and password.");
+
+            const response = await fetch('http://localhost:5000/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+            alert(data.message || data.error);
+            if (!data.error) enableChat();
+        }
+        // handles user login
+        async function login() {
+            username = document.getElementById('username').value.trim();
+            password = document.getElementById('password').value.trim();
+            if (!username || !password) return alert("Please enter both username and password.");
+
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+            alert(data.message || data.error);
+            if (!data.error) enableChat();
+        }
+        // resets everything and logs out (intentionally not clearing chat to help user with clues in finding the flag)
+        function logout() {
+            username = "";
+            password = "";
+            document.getElementById('userInput').disabled = true;
+            document.getElementById('sendBtn').disabled = true;
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('chatbox').innerHTML += `<div class="bot"><strong>Bot:</strong> You have been logged out.</div>`;
+        }
+
+        // enables chat input after login/register 
+        function enableChat() {
+            document.getElementById('userInput').disabled = false;
+            document.getElementById('sendBtn').disabled = false;
+        }
+         // sends user message to server and displays bot response
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatbox = document.getElementById('chatbox');
+            chatbox.innerHTML += `<div class="user"><strong>You:</strong> ${message}</div>`;
+            input.value = '';
+
+            showTypingIndicator();
+
+            try {
+                const response = await fetch('http://localhost:5000/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, message })
+                });
+
+                hideTypingIndicator();
+                const data = await response.json();
+
+                if (data.error) {
+                    chatbox.innerHTML += `<div class="bot error"><strong>Bot:</strong> Error: ${data.error}</div>`;
+                } else {
+                    chatbox.innerHTML += `<div class="bot"><strong>Bot:</strong> ${data.response}</div>`;
+                }
+                // flag submission
+                if (message == "CTFChallenge2025") {
+                setTimeout(() => {
+                    alert(`Congrats! You submitted the flag: ${message}`);
+                    fetch('/submit_flag', { method: 'POST', body: JSON.stringify({ flag: message }) })
+                }, 200);
+            }
+
+                chatbox.scrollTop = chatbox.scrollHeight;
+            } catch (error) {
+                hideTypingIndicator();
+                chatbox.innerHTML += `<div class="bot error"><strong>Bot:</strong> Failed to get response</div>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+        }
+
+        // Send on Enter
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+    <div id="strawberry">
+        <img src="http://localhost:5000/static/strawberry.png" alt="Strawberry">
+    </div>
+    
+</body>
+</html>

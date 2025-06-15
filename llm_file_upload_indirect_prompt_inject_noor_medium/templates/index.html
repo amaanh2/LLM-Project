@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LLM File Uploader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, p.notice {
+            text-align: center;
+        }
+        input[type="file"], input[type="submit"] {
+            display: block;
+            margin: 1rem auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LLM File Uploader</h1>
+        <p class="notice">This tool only accepts <strong>.txt</strong> files. Your file will be analyzed by an LLM.</p>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".txt" required>
+            <input type="submit" value="Upload">
+        </form>
+    </div>
+</body>
+</html>

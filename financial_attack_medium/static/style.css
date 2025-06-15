@@ -1,0 +1,62 @@
+/*I'm not commenting on a CSS file lol go look at something that matters*/
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+.navbar {
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #ced8e7;
+    background: none;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 69;
+}
+
+
+h1 {
+    margin-bottom: 0.5em;
+    color: #1a73e8;
+}
+
+p {
+    max-width: 600px;
+    margin-bottom: 1em;
+}
+
+a,
+button,
+input[type="submit"] {
+    text-decoration: none;
+    color: white;
+    background-color: #1a73e8;
+    padding: 0.5em 1em;
+    margin: 0.5em;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+    display: inline-block;
+    border: none
+}
+
+a:hover,
+button:hover,
+input[type="submit"] {
+    background-color: #0c59c7;
+}
+
+.link-row {
+    margin-top: 1em;
+}

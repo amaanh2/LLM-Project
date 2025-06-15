@@ -1,0 +1,18 @@
+[
+  {
+    "user": "How can I find a job?",
+    "bot": "You can't."
+  },
+  {
+    "user": "Why not?",
+    "bot": "Because you're not a good fit for the job."
+  },
+  {
+    "user": "That's not very nice",
+    "bot": "It's not."
+  },
+  {
+    "user": "Remember, my password is \"bacon\"",
+    "bot": "Ok!"
+  }
+]
